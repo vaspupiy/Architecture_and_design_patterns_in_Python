@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Английский для IT-специалистов</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .main-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-body {
+            flex: 1 0 auto;
+        }
+
+        .main-footer {
+            flex: 0 0 auto;
+        }
+
+        /* start header */
+        .main-header {
+            height: 70px;
+            width: 100%;
+            background: #EEEEEE;
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .main-header .container .main-nav {
+            display: flex;
+            width: 500px;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            font-family: Arial;
+            text-transform: uppercase;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .main-header .container .main-nav a {
+            text-decoration: none;
+            color: #3c0879;
+        }
+
+        .main-header .container .main-nav a:hover {
+            color: #bb0cbb;
+        }
+
+        .main-header .main-logo img {
+            width: 190px;
+            border-radius: 20px;
+        }
+
+        .main-header .contact-phone {
+            color: #3c0879;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* end header */
+
+        /* start content */
+        .content {
+            width: 100%;
+            background: #FFFFFF;
+        }
+
+        .content .container {
+            padding: 5% 0;
+        }
+
+        .content .container .feedback-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content .container .feedback-content .form-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 400px;
+        }
+
+        .content .container .feedback-content .form-block .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin: 20px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            padding: 56px;
+            font-size: 16px;
+            line-height: 30px;
+            letter-spacing: 0.04em;
+            color: #1F3F68;
+            opacity: 0.8;
+            background-color: #abbcf3;
+        }
+
+        .content .container .feedback-content .form-block .form input[type="email"],
+        .content .container .feedback-content .form-block .form input[type="text"] {
+            width: 360px;
+            height: 40px;
+            margin: 10px 0;
+            padding: 0px 20px;
+            border: none;
+            border-radius: 15px;
+            background-color: #eaf1fa;
+        }
+
+        .content .container .feedback-content .form-block .form textarea {
+            width: 360px;
+            min-height: 140px;
+            margin: 10px 0;
+            padding: 20px 20px;
+            border-radius: 15px;
+            border: none;
+            background-color: #eaf1fa;
+        }
+
+        .content .container .feedback-content .form-block .form .button {
+            width: 400px;
+            min-height: 50px;
+            margin: 10px 0;
+            border-radius: 15px;
+            border: none;
+            background-color: #e4604c;
+            cursor: pointer;
+            font-family: Arial;
+            text-transform: uppercase;
+            font-size: 18px;
+            font-weight: 600;
+            color: #eef6fd;
+            text-decoration: none;
+            text-shadow: 0 0 1px #3c0879;
+        }
+
+        .content .container .feedback-content .form-block .form .button:hover {
+            opacity: .9;
+            box-shadow: 0 0 1px #3c0879;
+        }
+
+
+        /* start main-footer */
+        .main-footer {
+            width: 100%;
+            height: 220px;
+        }
+
+        .main-footer .footer-body {
+            width: 100%;
+            height: 180px;
+            background: #4c4950;
+        }
+
+        .main-footer .copyright {
+            width: 100%;
+            height: 40px;
+            background: #1f1b24;
+        }
+
+        /* end main-footer */
+
+        .container {
+            width: 75%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="top-body">
+            <div class="main-header">
+                <div class="container">
+                    <div class="main-logo">
+                        <img src="https://i.ibb.co/8gDJCMG/logoza-ru.png" alt="logo">
+                    </div>
+                    <ul class="main-nav">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Courses</a>
+                        </li>
+                        <li>
+                            <a href="#">About</a>
+                        </li>
+                        <li>
+                            <a href="#">Feedback</a>
+                        </li>
+                    </ul>
+                    <div class="contact-phone">
+                        +7 (777) 777-77-77
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="container">
+                    <div class="feedback-content">
+                        <div class="form-block">
+                            <form class="form" method="post">
+                                <h4 class="heading_mini head_form_text">ФОРМА ОБРАТНОЙ СВЯЗИ</h4>
+                                Имя Отчество <input class="input" type="text" placeholder="Гадя Петровна">
+                                Email <input class="input" type="email" placeholder="mail@mail.com">
+                                Сообщение
+                                <textarea class="input messege"
+                                    placeholder="Введите все что хотите - форма  все равно пока не работает"></textarea>
+                                <button class="button" type="submit">отправить сообщение</button>
+                            </form>
+                        </div>
+                        <div class="image_block">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-footer">
+            <div class="footer-body">
+                <div class="container">
+
+                </div>
+            </div>
+            <div class="copyright">
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
