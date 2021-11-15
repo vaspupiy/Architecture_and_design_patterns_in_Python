@@ -3,7 +3,8 @@
 новая запись: 
 name: vasiliy zamornikov
 email: zigzagpupiy@gmail.com
-message: Текстовое сообщение
+message: Текстовое сообщение
+
 
 
 
