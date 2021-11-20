@@ -112,7 +112,7 @@
             background: #FFFFFF;
             border-radius: 10px;
             padding: 56px;
-            font-size: 16px;
+            font-size: 18px;
             line-height: 30px;
             letter-spacing: 0.04em;
             color: #1F3F68;
@@ -127,6 +127,7 @@
             margin: 10px 0;
             padding: 0px 20px;
             border: none;
+            font-size: 18px;
             border-radius: 15px;
             background-color: #eaf1fa;
         }
@@ -139,6 +140,8 @@
             border-radius: 15px;
             border: none;
             background-color: #eaf1fa;
+            font-size: 18px;
+            line-height: 30px;
         }
 
         .content .container .feedback-content .form-block .form .button {
@@ -201,16 +204,16 @@
                     </div>
                     <ul class="main-nav">
                         <li>
-                            <a href="#">Home</a>
+                            <a href="http://localhost:8080/">Home</a>
                         </li>
                         <li>
-                            <a href="#">Courses</a>
+                            <a href="http://localhost:8080/courses">Courses</a>
                         </li>
                         <li>
-                            <a href="#">About</a>
+                            <a href="http://localhost:8080/about">About</a>
                         </li>
                         <li>
-                            <a href="#">Feedback</a>
+                            <a href="http://localhost:8080/feedback/">Feedback</a>
                         </li>
                     </ul>
                     <div class="contact-phone">
@@ -223,13 +226,13 @@
                 <div class="container">
                     <div class="feedback-content">
                         <div class="form-block">
-                            <form class="form" method="post">
+                            <form class="form" action="#" method="post">
                                 <h4 class="heading_mini head_form_text">ФОРМА ОБРАТНОЙ СВЯЗИ</h4>
-                                Имя Отчество <input class="input" type="text" placeholder="Гадя Петровна">
-                                Email <input class="input" type="email" placeholder="mail@mail.com">
+                                Имя Отчество <input class="input" name="name" type="text" placeholder="Гадя Петровна">
+                                Email <input class="input" type="email" name="email" placeholder="mail@mail.com">
                                 Сообщение
-                                <textarea class="input messege"
-                                    placeholder="Введите все что хотите - форма  все равно пока не работает"></textarea>
+                                <textarea class="input message" name="message"
+                                    placeholder="Введите сообщение"></textarea>
                                 <button class="button" type="submit">отправить сообщение</button>
                             </form>
                         </div>

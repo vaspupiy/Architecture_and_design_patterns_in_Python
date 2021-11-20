@@ -1,0 +1,50 @@
+
+
+новая запись: 
+name: vasiliy zamornikov
+email: zigzagpupiy@gmail.com
+message: Текстовое сообщение
+
+
+
+
+новая запись: 
+name: Пиртахия Автандил Лаврентьевич
+email: test@mail.test
+message: Еще одно сообщение
+
+
+новая запись: 
+name: 
+email: 
+message: 
+
+
+новая запись: 
+name: 
+email: 
+message: 
+
+
+новая запись: 
+name: 
+email: 
+message: 
+
+
+новая запись: 
+name: 
+email: 
+message: 
+
+
+новая запись: 
+name: 
+email: 
+message: dddd
+
+
+новая запись: 
+name: Васьпупий Николаевич
+email: vas@gmail.com
+message: Финальное сообщение перед отправкой на проверку

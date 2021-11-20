@@ -1,9 +1,10 @@
-from views import Index, About, Courses, Feedback, NotFound
+from views import Index, About, Courses, Feedback, NotFound, Course
 
 # Набор привязок: путь-контроллер
 routes = {
     '/': Index(),
     '/courses/': Courses(),
+    '/courses/course/': Course(),
     '/about/': About(),
     '/feedback/': Feedback(),
     #  добавил возможность выводить 404 ошибку, оставляя навигационную панель(футтер и хедер)
