@@ -16,26 +16,54 @@ def decode_value(data: dict) -> dict:
 
 class Index:
     def __call__(self, request):
-        return '200 OK', render('index.html')
+        date = request.get('data', None)
+        data = {
+            'title': 'Английский',
+            'date': date
+        }
+        return '200 OK', render('index.html', data=data)
 
 
 class Courses:
     def __call__(self, request):
-        return '200 OK', render('courses.html')
+        date = request.get('data', None)
+        data = {
+            'title': 'Список курсов',
+            'date': date,
+            'course_names': [
+                'Курс 1', 'Курс 2', 'Курс 3', 'Курс 4', 'Курс 5', 'Курс 6'
+            ]
+        }
+        return '200 OK', render('courses.html', data=data)
 
 
 class Course:
     def __call__(self, request):
-        return '200 OK', render('course.html')
+        date = request.get('data', None)
+        data = {
+            'title': 'Курс',
+            'date': date
+        }
+        return '200 OK', render('course.html', data=data)
 
 
 class About:
     def __call__(self, request):
-        return '200 OK', render('about.html')
+        date = request.get('data', None)
+        data = {
+            'title': 'Такие дела...',
+            'date': date
+        }
+        return '200 OK', render('about.html', data=data)
 
 
 class Feedback:
     def __call__(self, request):
+        date = request.get('data', None)
+        data = {
+            'title': 'Обратная связь',
+            'date': date
+        }
         if request['method'] == 'POST' and request['data']['message']:
             # проверяем, что метод пост и что есть сообщение, иначе игнорируем
             with open('temp_bd.txt', 'a', encoding='utf-8') as f:
@@ -44,9 +72,14 @@ class Feedback:
                 for k, v in data.items():
                     str_line = f'{k}: {v}\n'
                     f.write(str_line)
-        return '200 OK', render('feedback.html')
+        return '200 OK', render('feedback.html', data=data)
 
 
 class NotFound:
     def __call__(self, request):
-        return '404 WHAT', render('page404.html')
+        date = request.get('data', None)
+        data = {
+            'title': 'Страница не найдена',
+            'date': date
+        }
+        return '404 WHAT', render('page404.html', data=data)
