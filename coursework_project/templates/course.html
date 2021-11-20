@@ -321,20 +321,32 @@
                 'update': 'обновлять'
             };
 
+            function getRandomInRange(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
             function progress(dict_obj) {
                 // эта ф-я будет в случайном порядке выводить слова на английском и русском,
                 // просить ввести слово на английском, и если не очепятались, 
                 // то удалять ключ-значение из словаря(массива ключей), и так пока не останется слов, потом след уровень
                 //... вот только разберусь с JS :)
                 let list_key = Object.keys(dict_obj); //массив ключей
-                let total_number = list_key.length;  // общее кол-во слов
-                let number = 29; // отгадано слов
                 console.log(list_key);
-                let word = list_key[3];
-                console.log(word, dict_obj[word]);
-                document.getElementById('task').innerHTML = "Изучаем слово - \"" + word + "\", перевод - \"" + dict_obj[word] + "\""
-                console.log('associate' == word);
-                console.log('asociate' == word);
+                const total_number = list_key.length;  // общее кол-во слов
+                let number = 29; // отгадано слов
+                let len_list = total_number;
+                while (len_list > 0) {
+                    let item = getRandomInRange(0, len_list - 1);
+                    let word = list_key[item];
+                    // delete list_key[item];
+                    list_key.splice(item, 1);
+                    len_list -= 1;
+                    console.log(item, word, dict_obj[word], list_key.length);
+                }
+                console.log(list_key);
+                // document.getElementById('task').innerHTML = "Изучаем слово - \"" + word + "\", перевод - \"" + dict_obj[word] + "\""
+                // console.log('associate' == word);
+                // console.log('asociate' == word);
                 let div_fill = document.getElementById('scale-progress'); // прогресс бар
                 div_fill.style.width = (number / total_number * 100) + "%";
                 document.getElementById('count').innerHTML = "Осталось " + (total_number - number) + " из " + total_number;
