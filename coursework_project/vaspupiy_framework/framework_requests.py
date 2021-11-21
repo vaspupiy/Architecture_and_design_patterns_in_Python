@@ -38,7 +38,7 @@ class PostRequests(Requests):
     def get_wsgi_input_data(env: dict) -> bytes:
         """метод возвращает данные в виде байт"""
         content_len_data = env.get('CONTENT_LENGTH')  # получаем длину тела
-        content_len = int(content_len_data) if content_len_data else 0 # Приводим к int
+        content_len = int(content_len_data) if content_len_data else 0  # Приводим к int
         # Считываем данные если они есть
         data = env['wsgi.input'].read(content_len) if content_len > 0 else b''
         return data
