@@ -10,9 +10,4 @@ python run.py
 3. в браузере набрать:
 http://localhost:8080/
 
-В настроящий момент доступны страницы только из адресной строки:
-http://localhost:8080/
-http://localhost:8080/about
-http://localhost:8080/courses
-http://localhost:8080/feedback
 
