@@ -1,0 +1,36 @@
+{% extends "base.html "%}
+
+{% block titile %}
+{{content.title}}
+{% endblock %}
+{% block style %}
+{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
+<div class="content">
+    <div class="container">
+        <div class="create-course-content">
+            <div>
+                <a href="/courses-list/?id={{content.id}}">назад</a>
+            </div>
+
+            <br>
+            <br>
+
+            <div>
+                <h1>Создание курса для категории "{{content.name}}"</h1>
+                <form method="post">
+                    <input type="text" name="name" placeholder="Название">
+                    <button type="submit">Сохранить и вернуться к списку курсов</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{% include "inc-footer.html" %}
+{% endblock %}

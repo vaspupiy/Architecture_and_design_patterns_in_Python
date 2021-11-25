@@ -1,0 +1,67 @@
+{% extends "base.html "%}
+
+{% block titile %}
+{{content.title}}
+{% endblock %}
+{% block style %}
+{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
+<div class="content">
+    <div class="container">
+        <div class="title">
+            <h1>Программы обучения</h1>
+            <p>Курсы в течение года.</p>
+            <p>Расписание действует на: {{content.date}}</p>
+        </div>
+        <div class="head">
+            <div class="city">
+                Москва
+            </div>
+            <div class="city">
+                Санкт-Петербург
+            </div>
+            <div class="city">
+                Екатеринбург
+            </div>
+        </div>
+        <div class="corse">
+            <div class="corseTitle">
+                Английский
+            </div>
+            <div class="date_time">
+                <div class="date">
+                    Сб, 20 февраля 2022
+                </div>
+                <div class="time">
+                    11:00 - 14:00
+                </div>
+            </div>
+            <div class="date_time">
+                <div class="date">
+                    Сб, 6 марта 2022
+                </div>
+                <div class="time">
+                    11:00 - 14:00
+                </div>
+            </div>
+            <div class="date_time">
+                <div class="date">
+                    Сб, 20 марта 2022
+                </div>
+                <div class="time">
+                    11:00 - 14:00
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{% include "inc-footer.html" %}
+{% endblock %}

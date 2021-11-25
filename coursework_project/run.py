@@ -1,9 +1,9 @@
 from wsgiref.simple_server import make_server
 from vaspupiy_framework.main import Framework
-from urls import routes, fronts
+from urls import routes
 
 # Создаем объект WSGI-приложения
-application = Framework(routes, fronts)
+application = Framework(routes)
 
 with make_server('', 8080, application) as httpd:
     print("Запуск на порту 8080...")

@@ -1,0 +1,42 @@
+{% extends "base.html "%}
+
+{% block titile %}
+{{content.title}}
+{% endblock %}
+{% block style %}
+{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
+<div class="content">
+    <div class="container">
+        <div class="category-list-content">
+            <h1>Список категорий</h1>
+            <ul>
+                {% for item in content.objects_list %}
+                <li>
+                    {{item.name}} <span>Количество курсов: {{item.course_count()}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <div>
+                {% for item in content.objects_list %}
+                <li>
+                    <a href="/courses-list/?id={{item.id}}">Список курсов категории - {{item.name}}</a>
+                </li>
+                {% endfor %}
+                {% for item in content.objects_list %}
+                <li>
+                    <a href="/create-course/?id={{item.id}}">Создать курс категории - {{item.name}}</a>
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{% include "inc-footer.html" %}
+{% endblock %}

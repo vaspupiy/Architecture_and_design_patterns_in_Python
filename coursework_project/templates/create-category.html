@@ -1,0 +1,27 @@
+{% extends "base.html "%}
+
+{% block titile %}
+{{content.title}}
+{% endblock %}
+{% block style %}
+{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
+<div class="content">
+    <div class="container">
+        <div class="create-category-content">
+            <h1>Создание категории</h1>
+            <form method="post">
+                <input type="text" name="name" placeholder="Название">
+                <button type="submit">Сохранить и вернуться на главную Админки</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{% include "inc-footer.html" %}
+{% endblock %}
