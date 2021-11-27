@@ -1,7 +1,7 @@
 {% extends "base.html "%}
 
 {% block titile %}
-    {{data.title}}
+    {{content.title}}
 {% endblock %}
 {% block style %}
 {% include "inc-style.html" %}
@@ -13,7 +13,7 @@
 <div class="content">
     <div class="container">
         <div class="courses-content">
-            {% for course_name in data.course_names %}
+            {% for course_name in content.course_names %}
                 <div class="item-course">
                     <a href="/courses/course/">{{ course_name }}</a>
                 </div>

@@ -1,0 +1,51 @@
+{% extends "base.html "%}
+
+{% block titile %}
+{{content.title}}
+{% endblock %}
+{% block style %}
+{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
+<div class="content">
+    <div class="container">
+        <div class="course-list-content">
+            <div>
+                <a href="/admin/">назад на главную Админки</a>
+            </div>
+
+            <br>
+            <br>
+
+            <div>
+                <a href="/create-course/?id={{content.id}}">Создать новый курс</a>
+                <br>
+                <h1>Список курсов для категории "{{content.name}}"</h1>
+                {% for item in content.objects_list %}
+                <li>
+                    {{item.name}} <span><a
+                            href="/copy-course/?name={{item.name}}&id={{content.id}}">скопировать</a></span>
+                </li>
+                {% endfor %}
+                <br>
+                <br>
+                {% if content.all_course_list %}
+                <h1>Список всех курсов включая копии</h1>
+                {% for item in content.all_course_list %}
+                <li>
+                    {{item.name}} <span><a
+                            href="/copy-course/?name={{item.name}}&id={{content.id}}">скопировать</a></span>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{% include "inc-footer.html" %}
+{% endblock %}

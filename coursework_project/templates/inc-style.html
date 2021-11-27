@@ -39,13 +39,13 @@
 
     .main-header .container .main-nav {
         display: flex;
-        width: 500px;
+        width: 600px;
         justify-content: space-between;
         align-items: center;
         list-style: none;
         font-family: Arial;
         text-transform: uppercase;
-        font-size: 24px;
+        font-size: 18px;
         font-weight: 600;
     }
 
@@ -67,6 +67,71 @@
         color: #3c0879;
         font-size: 24px;
         font-weight: 600;
+    }
+
+    .main-header .container ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-header .container a {
+        display: block;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .main-header .container .topmenu>li {
+        display: inline-block;
+        position: relative;
+    }
+
+    .main-header .container .topmenu>li>a {
+        font-family: 'Exo 2', sans-serif;
+        height: 70px;
+        line-height: 70px;
+        padding: 0 30px;
+        font-weight: bold;
+        color: #003559;
+        text-transform: uppercase;
+    }
+
+    .main-header .container .topmenu .down:after {
+        /* content: "\f107"; */
+        margin-left: 8px;
+        font-family: Arial;
+    }
+
+    .main-header .container .topmenu li a:hover {
+        color: #E6855F;
+    }
+
+    .main-header .container .submenu {
+        background: white;
+        border: 2px solid #003559;
+        position: absolute;
+        left: 0;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 5;
+        width: 170px;
+        transform: perspective(600px) rotateX(-90deg);
+        transform-origin: 0% 0%;
+        transition: .6s ease-in-out;
+    }
+
+    .topmenu>li:hover .submenu {
+        visibility: visible;
+        opacity: 1;
+        transform: perspective(600px) rotateX(0deg);
+    }
+
+    .submenu li a {
+        color: #7f7f7f;
+        font-size: 13px;
+        line-height: 36px;
+        padding: 0 25px;
+        font-family: 'Kurale', serif;
     }
 
     /* end header */

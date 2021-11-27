@@ -10,9 +10,8 @@ class PageNotFound404:
 class Framework:
     """Класс Framework - основа WSGI-фреймворка"""
 
-    def __init__(self, routes_obj, fronts_obj):
+    def __init__(self, routes_obj):
         self.routes_lst = routes_obj
-        self.fronts_lst = fronts_obj
 
     def __call__(self, environ, start_response):
         # Получаем адрес, по которому пользователь выполнил переход
@@ -45,13 +44,7 @@ class Framework:
             else:
                 view = PageNotFound404()
 
-        # наполняем словарь request элементами
-        # этот словарь получат все контроллеры
-        # отработка паттерна front controller
-        for front in self.fronts_lst:
-            front(request)
-
-        # Запускаем контроллер с передачей объекта request
+        # Запускаем контроллер
         code, body = view(request)
         start_response(code, [('Content-Type', 'text/html')])
         return [body.encode('utf-8')]
