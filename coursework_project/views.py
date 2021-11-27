@@ -1,14 +1,20 @@
 """Модуль, содержащий контроллеры веб-приложения"""
 from quopri import decodestring
 from datetime import date
+
+from structural_patterns import AppRoute, Debug
 from vaspupiy_framework.templator import render
 from patterns.creations_patterns import Engine, Logger
 
 site = Engine()
 logger = Logger('main')
 
+routes = {}
 
+
+@AppRoute(routes=routes, url='/')
 class Index:
+    @Debug(name='Index')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -18,7 +24,9 @@ class Index:
         return '200 OK', render('index.html', content=content)
 
 
+@AppRoute(routes=routes, url='/admin/')
 class IndexAdmin:
+    @Debug(name='IndexAdmin')
     def __call__(self, request):
         _date = date.today()
         objects_list = site.categories
@@ -30,8 +38,10 @@ class IndexAdmin:
         return '200 OK', render('index-admin.html', content=content)
 
 
+@AppRoute(routes=routes, url='/courses/')
 class Courses:
     # По сути дубль CoursesList, оставлю что-то одно... позже... :)
+    @Debug(name='Courses')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -45,7 +55,9 @@ class Courses:
 
 
 # Контроллер - список курсов
+@AppRoute(routes=routes, url='/courses-list/')
 class CoursesList:
+    @Debug(name='Courses')
     def __call__(self, request):
         logger.log('Список курсов')
         try:
@@ -70,9 +82,11 @@ class CoursesList:
 
 
 # контроллер - создать курс
+@AppRoute(routes=routes, url='/create-course/')
 class CreateCourse:
     category_id = -1
 
+    @Debug(name='CreateCourse')
     def __call__(self, request):
         if request['method'] == 'POST':
             # метод пост
@@ -123,7 +137,9 @@ class CreateCourse:
 
 
 # Контроллер - создать категорию
+@AppRoute(routes=routes, url='/create-category/')
 class CreateCategory:
+    @Debug(name='CreateCategory')
     def __call__(self, request):
 
         if request['method'] == 'POST':
@@ -166,7 +182,9 @@ class CreateCategory:
 
 
 # Контроллер - список категорий
+@AppRoute(routes=routes, url='/category-list/')
 class CategoryList:
+    @Debug(name='CategoryList')
     def __call__(self, request):
         logger.log('Список категорий')
 
@@ -182,7 +200,9 @@ class CategoryList:
 
 
 # контроллер - копировать курс
+@AppRoute(routes=routes, url='/copy-course/')
 class CopyCourse:
+    @Debug(name='CopyCourse')
     def __call__(self, request):
         request_params = request['request_params']
 
@@ -218,7 +238,9 @@ class CopyCourse:
             return '200 OK', 'No courses have been added yet'
 
 
+@AppRoute(routes=routes, url='/courses/course/')
 class Course:
+    @Debug(name='Course')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -228,7 +250,9 @@ class Course:
         return '200 OK', render('course.html', content=content)
 
 
+@AppRoute(routes=routes, url='/about/')
 class About:
+    @Debug(name='About')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -238,7 +262,9 @@ class About:
         return '200 OK', render('about.html', content=content)
 
 
+@AppRoute(routes=routes, url='/feedback/')
 class Feedback:
+    @Debug(name='Feedback')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -256,7 +282,9 @@ class Feedback:
         return '200 OK', render('feedback.html', content=content)
 
 
+@AppRoute(routes=routes, url='404_not_found')
 class NotFound:
+    @Debug(name='NotFound')
     def __call__(self, request):
         _date = date.today()
         content = {
@@ -267,7 +295,9 @@ class NotFound:
 
 
 # контроллер - Расписания
+@AppRoute(routes=routes, url='/study-programs/')
 class StudyPrograms:
+    @Debug(name='StudyPrograms')
     def __call__(self, request):
         _date = date.today()
         content = {
