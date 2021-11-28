@@ -1,16 +1,20 @@
 """Модуль, содержащий контроллеры веб-приложения"""
-from quopri import decodestring
-from datetime import date
-from vaspupiy_framework.templator import render
+
 from patterns.creations_patterns import Engine, Logger
+from structural_patterns import AppRoute, Debug
+from vaspupiy_framework.templator import render
 
 site = Engine()
 logger = Logger('main')
 
+routes = {}
 
+
+@AppRoute(routes=routes, url='/')
 class Index:
+    @Debug(name='Index')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Английский',
             'date': _date,
@@ -18,9 +22,11 @@ class Index:
         return '200 OK', render('index.html', content=content)
 
 
+@AppRoute(routes=routes, url='/admin/')
 class IndexAdmin:
+    @Debug(name='IndexAdmin')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         objects_list = site.categories
         content = {
             'title': 'Английский',
@@ -30,10 +36,12 @@ class IndexAdmin:
         return '200 OK', render('index-admin.html', content=content)
 
 
+@AppRoute(routes=routes, url='/courses/')
 class Courses:
     # По сути дубль CoursesList, оставлю что-то одно... позже... :)
+    @Debug(name='Courses')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Список курсов',
             'date': _date,
@@ -45,12 +53,14 @@ class Courses:
 
 
 # Контроллер - список курсов
+@AppRoute(routes=routes, url='/courses-list/')
 class CoursesList:
+    @Debug(name='Courses')
     def __call__(self, request):
         logger.log('Список курсов')
         try:
             category = site.find_category_by_id(int(request['request_params']['id']))
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             name = category.name
             _id = category.id
@@ -70,9 +80,11 @@ class CoursesList:
 
 
 # контроллер - создать курс
+@AppRoute(routes=routes, url='/create-course/')
 class CreateCourse:
     category_id = -1
 
+    @Debug(name='CreateCourse')
     def __call__(self, request):
         if request['method'] == 'POST':
             # метод пост
@@ -87,7 +99,7 @@ class CreateCourse:
                 course = site.create_course('record', name, category)
                 site.courses.append(course)
 
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             name = category.name
             _id = category.id
@@ -106,7 +118,7 @@ class CreateCourse:
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
 
-                _date = date.today()
+                _date = request.get('date', None)
                 name = category.name
                 _id = category.id
 
@@ -123,7 +135,9 @@ class CreateCourse:
 
 
 # Контроллер - создать категорию
+@AppRoute(routes=routes, url='/create-category/')
 class CreateCategory:
+    @Debug(name='CreateCategory')
     def __call__(self, request):
 
         if request['method'] == 'POST':
@@ -143,7 +157,7 @@ class CreateCategory:
             site.categories.append(new_category)
 
             objects_list = site.categories
-            _date = date.today()
+            _date = request.get('date', None)
 
             content = {
                 'title': 'Создать курс',
@@ -155,7 +169,7 @@ class CreateCategory:
             return '200 OK', render('index-admin.html', content=content)
         else:
             categories = site.categories
-            _date = date.today()
+            _date = request.get('date', None)
 
             content = {
                 'title': 'Создать курс',
@@ -166,11 +180,13 @@ class CreateCategory:
 
 
 # Контроллер - список категорий
+@AppRoute(routes=routes, url='/category-list/')
 class CategoryList:
+    @Debug(name='CategoryList')
     def __call__(self, request):
         logger.log('Список категорий')
 
-        _date = date.today()
+        _date = request.get('date', None)
         objects_list = site.categories
 
         content = {
@@ -182,7 +198,9 @@ class CategoryList:
 
 
 # контроллер - копировать курс
+@AppRoute(routes=routes, url='/copy-course/')
 class CopyCourse:
+    @Debug(name='CopyCourse')
     def __call__(self, request):
         request_params = request['request_params']
 
@@ -198,7 +216,7 @@ class CopyCourse:
                 new_course.name = new_name
                 site.courses.append(new_course)
 
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             cat_name = category.name
             all_course_list = site.courses
@@ -218,9 +236,11 @@ class CopyCourse:
             return '200 OK', 'No courses have been added yet'
 
 
+@AppRoute(routes=routes, url='/courses/course/')
 class Course:
+    @Debug(name='Course')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Курс',
             'date': _date
@@ -228,9 +248,11 @@ class Course:
         return '200 OK', render('course.html', content=content)
 
 
+@AppRoute(routes=routes, url='/about/')
 class About:
+    @Debug(name='About')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Такие дела...',
             'date': _date
@@ -238,9 +260,11 @@ class About:
         return '200 OK', render('about.html', content=content)
 
 
+@AppRoute(routes=routes, url='/feedback/')
 class Feedback:
+    @Debug(name='Feedback')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Обратная связь',
             'date': _date
@@ -256,9 +280,11 @@ class Feedback:
         return '200 OK', render('feedback.html', content=content)
 
 
+@AppRoute(routes=routes, url='404_not_found')
 class NotFound:
+    @Debug(name='NotFound')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Страница не найдена',
             'date': _date
@@ -267,9 +293,11 @@ class NotFound:
 
 
 # контроллер - Расписания
+@AppRoute(routes=routes, url='/study-programs/')
 class StudyPrograms:
+    @Debug(name='StudyPrograms')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Расписания',
             'date': _date
