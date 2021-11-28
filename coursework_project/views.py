@@ -1,10 +1,8 @@
 """Модуль, содержащий контроллеры веб-приложения"""
-from quopri import decodestring
-from datetime import date
 
+from patterns.creations_patterns import Engine, Logger
 from structural_patterns import AppRoute, Debug
 from vaspupiy_framework.templator import render
-from patterns.creations_patterns import Engine, Logger
 
 site = Engine()
 logger = Logger('main')
@@ -16,7 +14,7 @@ routes = {}
 class Index:
     @Debug(name='Index')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Английский',
             'date': _date,
@@ -28,7 +26,7 @@ class Index:
 class IndexAdmin:
     @Debug(name='IndexAdmin')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         objects_list = site.categories
         content = {
             'title': 'Английский',
@@ -43,7 +41,7 @@ class Courses:
     # По сути дубль CoursesList, оставлю что-то одно... позже... :)
     @Debug(name='Courses')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Список курсов',
             'date': _date,
@@ -62,7 +60,7 @@ class CoursesList:
         logger.log('Список курсов')
         try:
             category = site.find_category_by_id(int(request['request_params']['id']))
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             name = category.name
             _id = category.id
@@ -101,7 +99,7 @@ class CreateCourse:
                 course = site.create_course('record', name, category)
                 site.courses.append(course)
 
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             name = category.name
             _id = category.id
@@ -120,7 +118,7 @@ class CreateCourse:
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
 
-                _date = date.today()
+                _date = request.get('date', None)
                 name = category.name
                 _id = category.id
 
@@ -159,7 +157,7 @@ class CreateCategory:
             site.categories.append(new_category)
 
             objects_list = site.categories
-            _date = date.today()
+            _date = request.get('date', None)
 
             content = {
                 'title': 'Создать курс',
@@ -171,7 +169,7 @@ class CreateCategory:
             return '200 OK', render('index-admin.html', content=content)
         else:
             categories = site.categories
-            _date = date.today()
+            _date = request.get('date', None)
 
             content = {
                 'title': 'Создать курс',
@@ -188,7 +186,7 @@ class CategoryList:
     def __call__(self, request):
         logger.log('Список категорий')
 
-        _date = date.today()
+        _date = request.get('date', None)
         objects_list = site.categories
 
         content = {
@@ -218,7 +216,7 @@ class CopyCourse:
                 new_course.name = new_name
                 site.courses.append(new_course)
 
-            _date = date.today()
+            _date = request.get('date', None)
             objects_list = category.courses
             cat_name = category.name
             all_course_list = site.courses
@@ -242,7 +240,7 @@ class CopyCourse:
 class Course:
     @Debug(name='Course')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Курс',
             'date': _date
@@ -254,7 +252,7 @@ class Course:
 class About:
     @Debug(name='About')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Такие дела...',
             'date': _date
@@ -266,7 +264,7 @@ class About:
 class Feedback:
     @Debug(name='Feedback')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Обратная связь',
             'date': _date
@@ -286,7 +284,7 @@ class Feedback:
 class NotFound:
     @Debug(name='NotFound')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Страница не найдена',
             'date': _date
@@ -299,7 +297,7 @@ class NotFound:
 class StudyPrograms:
     @Debug(name='StudyPrograms')
     def __call__(self, request):
-        _date = date.today()
+        _date = request.get('date', None)
         content = {
             'title': 'Расписания',
             'date': _date
