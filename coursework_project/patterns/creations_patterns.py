@@ -1,7 +1,10 @@
+import sqlite3
 from copy import deepcopy
 from quopri import decodestring
+import sqlite3
 
 # Абстрактный пользователь
+from architectural_system_pattern_unit_of_work import DomainObject
 from behavioral_patterns import Subject, ConsoleWriter
 
 
@@ -16,7 +19,7 @@ class Teacher(User):
 
 
 #  Студент
-class Student(User):
+class Student(User, DomainObject):
 
     def __init__(self, name):
         self.courses = []
@@ -113,9 +116,10 @@ class CourseFactory:
 class Engine:
     def __init__(self):
         self.teachers = []
-        self.students = [Student('Вася'), Student('Петя')]
+        self.students = []
         self.courses = []
         self.categories = []
+        self.feedbacks = []
 
     @staticmethod
     def create_user(type_, name):
@@ -135,6 +139,10 @@ class Engine:
     @staticmethod
     def create_course(type_, name, category):
         return CourseFactory.create(type_, name, category)
+
+    @staticmethod
+    def create_feedback(name, email, message):
+        return FeedbackModel(name, email, message)
 
     def get_course(self, name):
         for item in self.courses:
@@ -191,3 +199,163 @@ class Logger(metaclass=SingletonByName):
     def log(self, text):
         text = f'log---> {text}'
         self.writer.write(text)
+
+
+class RecordNotFoundException(Exception):
+    def __init__(self, message):
+        super().__init__(f'Record not found: {message}')
+
+
+class DbCommitException(Exception):
+    def __init__(self, message):
+        super().__init__(f'Db commit error: {message}')
+
+
+class DbUpdateException(Exception):
+    def __init__(self, message):
+        super().__init__(f'Db update error: {message}')
+
+
+class DbDeleteException(Exception):
+    def __init__(self, message):
+        super().__init__(f'Db delete error: {message}')
+
+
+class StudentMapper:
+
+    def __init__(self, _connection):
+        self.connection = _connection
+        self.cursor = connection.cursor()
+        self.table_name = 'student'
+
+    def all(self):
+        statement = f'SELECT * from {self.table_name}'
+        self.cursor.execute(statement)
+        result = []
+        for item in self.cursor.fetchall():  # все записи
+            id_, name = item
+            student = Student(name)
+            student.id = id_
+            result.append(student)
+        return result
+
+    def find_by_id(self, id_):
+        statement = f"SELECT id, name FROM {self.table_name} WHERE id=?"
+        self.cursor.execute(statement, (id_,))
+        result = self.cursor.fetchone()  # возвращает первую запись
+        if result:
+            return Student(*result)  # объект класса
+        else:
+            raise RecordNotFoundException(f'record with id={id_} not found')
+
+    def insert(self, obj):
+        statement = f"INSERT INTO {self.table_name} (name) VALUES (?)"
+        self.cursor.execute(statement, (obj.name,))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbCommitException(e.args)
+
+    def update(self, obj):
+        statement = f"UPDATE {self.table_name} SET name=? WHERE id=?"
+        # Где взять obj.id? Добавить в DomainModel? Или добавить когда берем объект из базы
+        self.cursor.execute(statement, (obj.name, obj.id))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbUpdateException(e.args)
+
+    def delete(self, obj):
+        statement = f"DELETE FROM {self.table_name} WHERE id=?"
+        self.cursor.execute(statement, (obj.id,))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbDeleteException(e.args)
+
+
+# класс Feedback
+class FeedbackModel(DomainObject):
+
+    def __init__(self, name, email, message):
+        self.name = name
+        self.email = email
+        self.message = message
+
+
+class FeedbackMapper:
+
+    def __init__(self, _connection):
+        self.connection = _connection
+        self.cursor = connection.cursor()
+        self.table_name = 'feedback'
+
+    def all(self):
+        statement = f'SELECT * from {self.table_name}'
+        self.cursor.execute(statement)
+        result = []
+        for item in self.cursor.fetchall():
+            id_, name, email, message = item
+            feedback = FeedbackModel(name, email, message)
+            feedback.id = id_
+            result.append(feedback)
+        return result
+
+    def find_by_id(self, id_):
+        statement = f"SELECT id, name, email, message FROM {self.table_name} WHERE id=?"
+        self.cursor.execute(statement, (id_,))
+        result = self.cursor.fetchone()
+        print(*result)
+        if result:
+            return Student(*result)
+        else:
+            raise RecordNotFoundException(f'record with id={id_} not found')
+
+    def insert(self, obj):
+        statement = f"INSERT INTO {self.table_name} (name, email, message) VALUES (?, ?, ?)"
+        self.cursor.execute(statement, (obj.name, obj.email, obj.message,))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbCommitException(e.args)
+
+    def update(self, obj):
+        statement = f"UPDATE {self.table_name} SET name=?, email=?, message=?  WHERE id=?"
+        self.cursor.execute(statement, (obj.name, obj.email, obj.message, obj.id))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbUpdateException(e.args)
+
+    def delete(self, obj):
+        statement = f"DELETE FROM {self.table_name} WHERE id=?"
+        self.cursor.execute(statement, (obj.id,))
+        try:
+            self.connection.commit()
+        except Exception as e:
+            raise DbDeleteException(e.args)
+
+
+connection = sqlite3.connect('patterns.sqlite')
+
+
+# архитектурный системный паттерн - Data Mapper
+class MapperRegistry:
+    mappers = {
+        'student': StudentMapper,
+        'feedback': FeedbackMapper,
+        # 'category': CategoryMapper и т.д.
+    }
+
+    @staticmethod
+    def get_mapper(obj):
+        if isinstance(obj, Student):
+            return StudentMapper(connection)
+        if isinstance(obj, FeedbackModel):
+            return FeedbackMapper(connection)
+        # if isinstance(obj, Category):
+        # return CategoryMapper(connection)
+
+    @staticmethod
+    def get_current_mapper(name):
+        return MapperRegistry.mappers[name](connection)
