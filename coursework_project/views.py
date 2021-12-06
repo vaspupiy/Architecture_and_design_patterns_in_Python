@@ -1,13 +1,16 @@
 """Модуль, содержащий контроллеры веб-приложения"""
-from behavioral_patterns import ListView, CreateView, BaseSerializer, EmailNotifier, SmsNotifier
-from patterns.creations_patterns import Engine, Logger
-from structural_patterns import AppRoute, Debug
+from architectural_system_pattern_unit_of_work import UnitOfWork
+from patterns.behavioral_patterns import ListView, CreateView, BaseSerializer, EmailNotifier, SmsNotifier
+from patterns.creations_patterns import Engine, Logger, MapperRegistry, FeedbackModel
+from patterns.structural_patterns import AppRoute, Debug
 from vaspupiy_framework.templator import render
 
 site = Engine()
 logger = Logger('main')
 email_notifier = EmailNotifier()
 sms_notifier = SmsNotifier()
+UnitOfWork.new_current()
+UnitOfWork.get_current().set_mapper_registry(MapperRegistry)
 
 routes = {}
 
@@ -266,23 +269,20 @@ class About:
 
 
 @AppRoute(routes=routes, url='/feedback/')
-class Feedback:
-    @Debug(name='Feedback')
-    def __call__(self, request):
-        _date = request.get('date', None)
-        content = {
-            'title': 'Обратная связь',
-            'date': _date
-        }
-        if request['method'] == 'POST' and request['data']['message']:
-            # проверяем, что метод пост и что есть сообщение, иначе игнорируем
-            with open('temp_bd.txt', 'a', encoding='utf-8') as f:
-                f.write('\n\nновая запись: \n')
-                data = site.decode_dict(request['data'])
-                for k, v in data.items():
-                    str_line = f'{k}: {v}\n'
-                    f.write(str_line)
-        return '200 OK', render('feedback.html', content=content)
+class Feedback(CreateView):
+    template_name = 'feedback.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['title'] = 'Обратная связь'
+        return context
+
+    def create_obj(self, data: dict):
+        data = site.decode_dict(data)
+        new_obj = site.create_feedback(**data)
+        site.feedbacks.append(new_obj)
+        new_obj.mark_new()
+        UnitOfWork.get_current().commit()
 
 
 @AppRoute(routes=routes, url='404_not_found')
@@ -313,13 +313,17 @@ class StudyPrograms:
 # контроллер - отображение студентов
 @AppRoute(routes=routes, url='/student-list/')
 class StudentListView(ListView):
-    queryset = site.students
+    # queryset = site.students
     template_name = 'student-list.html'
 
     def get_context_data(self):
         context = super().get_context_data()
         context['title'] = 'Список студентов'
         return context
+
+    def get_queryset(self):
+        mapper = MapperRegistry.get_current_mapper('student')
+        return mapper.all()
 
 
 @AppRoute(routes=routes, url='/create-student/')
@@ -336,6 +340,8 @@ class StudentCreateView(CreateView):
         name = site.decode_value(name)
         new_obj = site.create_user('student', name)
         site.students.append(new_obj)
+        new_obj.mark_new()
+        UnitOfWork.get_current().commit()
 
 
 @AppRoute(routes=routes, url='/add-student/')
